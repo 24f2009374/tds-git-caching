@@ -1,0 +1,28 @@
+name: Dependency Cache Demo
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        id: cache-step
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/demo
+          key: cache-6f0241c
+
+      - name: prime-cache-6f0241c
+        run: echo "Cache hit result - ${{ steps.cache-step.outputs.cache-hit }}"
+
+      - name: Create dummy cached file (primes the cache)
+        run: |
+          mkdir -p ~/.cache/demo
+          echo "cached content" > ~/.cache/demo/deps.txt
